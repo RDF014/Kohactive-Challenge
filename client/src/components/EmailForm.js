@@ -5,30 +5,30 @@ class EmailForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipient: '',
+      recipients: '',
       subject: '',
       message: ''
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.sendMail = this.sendMail.bind(this);
+    ['onChange',
+    'onSubmit',
+    'sendMail'
+    ].forEach(method => this[method] = this[method].bind(this));
   }
 
   sendMail () {
     const {
-      recipient,
+      recipients,
       subject,
       message
     } = this.state;
     Axios.post('/v1/mail', {
-      recipient,
+      recipients,
       subject,
       message
     })
     .then(res => alert('Email was successfully sent') )
     .catch(err => alert('Email could not be sent') ); 
   }
-
 
   onSubmit(e) {
     e.preventDefault();
@@ -43,7 +43,7 @@ class EmailForm extends Component {
 
   render() {
     const {
-      recipient,
+      recipients,
       subject,
       message
     } = this.state;
@@ -52,17 +52,20 @@ class EmailForm extends Component {
         <h3> Email will be sent from no_reply@raphaeldf.com </h3>
         <form>
           <p>To: 
-            <input 
+            <input
+              size="100"
               type="text"
-              placeholder="JoeSchmoe@email.com"
-              name="recipient"
-              value={recipient}
-              onChange={(e) => this.onChange(e, 'recipient')}
+              placeholder="JoeSchmoe@email.com JaneDoe@email.com"
+              name="recipients"
+              value={recipients}
+              onChange={(e) => this.onChange(e, 'recipients')}
               required
-            />
+            /><br/>
+            <span>If sending to multiple people, please separate emails with a space</span>
           </p>
           <p>Subject: 
             <input 
+              size="75"
               type="text"
               placeholder="Hello"
               name="subject"

@@ -8,11 +8,12 @@ const router = express.Router();
 router.route('/mail')
   .post((req, res) => {
     console.log('sendingMail');
-    const { recipient, subject, message, } = req.body;
-    sendSparkPost(recipient, subject, message)
-    .then(data => res.send(data) )
-    .catch(err => sendSendgrid(recipient, subject, message) )
-    .then(data => res.send(data) )
+    const { recipients, subject, message, } = req.body;
+    const separateRecipents = recipients.split(' ');
+    sendSparkPost(separateRecipents, subject, message)
+    .then(data => res.status(201).send(data) )
+    .catch(err => sendSendgrid(separateRecipents, subject, message) )
+    .then(data => res.status(201).send(data) )
     .catch(err => res.status(400).send(err) );
   });
 

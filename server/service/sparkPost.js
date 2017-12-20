@@ -1,27 +1,17 @@
 const SparkPost = require('sparkpost');
 const client = new SparkPost();
-// FIGURE OUT HOW TO SET UP DOMAIN
-function sendSparkPost () {
+
+function sendSparkPost (recipient, subject, message) {
   return client.transmissions.send({
     content: {
-      from: 'rdf014@raphaeldf.com',
-      subject: 'Hello, World!',
-      html:'<html><body><p>Testing SparkPost - the world\'s most awesomest email service!</p></body></html>'
+      from: 'no_reply@raphaeldf.com',
+      subject: subject,
+      html:`<html><body><p>${message}</p></body></html>`
     },
-    recipients: [
-      {address: 'rdf014@gmail.com'}
-    ]
+    recipients: [ { address: recipient } ]
   })
-  .then(data => {
-    console.log('Woohoo! You just sent your first mailing!');
-    console.log(data);
-    return data;
-  })
-  .catch(err => {
-    console.log('Whoops! Something went wrong');
-    console.log(err);
-    throw err;
-  });
+  .then(data => data)
+  .catch(err => {throw err});
 };
 
 module.exports = sendSparkPost; 

@@ -1,13 +1,11 @@
 const express = require('express');
 const sendSparkPost = require('../service/sparkPost');
-const sendMailgun = require('../service/mailgun');
 const sendSendgrid = require('../service/sendgrid');
 
 const router = express.Router();
 
 router.route('/mail')
   .post((req, res) => {
-    console.log('sendingMail');
     const { recipients, subject, message, } = req.body;
     const separateRecipents = recipients.split(' ');
     sendSparkPost(separateRecipents, subject, message)
